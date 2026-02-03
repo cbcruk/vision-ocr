@@ -1,0 +1,24 @@
+# Dependencies
+node_modules/
+
+# Build output
+dist
+*.tsbuildinfo
+
+# Swift build artifacts (node-swift)
+.build/
+*.node
+
+# Logs
+*.log
+
+# Environment
+.env
+.env.*
+
+# OS
+.DS_Store
+
+# npm
+*.tgz
+.npm

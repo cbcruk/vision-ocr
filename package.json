@@ -1,0 +1,36 @@
+{
+  "name": "vision-ocr",
+  "version": "1.0.0",
+  "description": "Extract text from images using macOS Vision Framework OCR",
+  "author": "eunsoo",
+  "license": "MIT",
+  "bin": {
+    "vision-ocr": "dist/cli.js"
+  },
+  "main": "dist/vision-ocr.js",
+  "types": "dist/vision-ocr.d.ts",
+  "swift": {
+    "packagePath": "swift"
+  },
+  "scripts": {
+    "build:swift": "npx node-swift build",
+    "build:ts": "tsc",
+    "build": "npm run build:swift && npm run build:ts",
+    "postinstall": "npm run build:swift",
+    "clean": "rm -rf dist .build"
+  },
+  "dependencies": {
+    "commander": "^12.0.0",
+    "node-swift": "^1.4.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.5.0",
+    "typescript": "^5.5.4"
+  },
+  "os": [
+    "darwin"
+  ],
+  "engines": {
+    "node": ">=18"
+  }
+}
