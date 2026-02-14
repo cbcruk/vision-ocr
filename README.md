@@ -1,6 +1,6 @@
-# vision-ocr
+# @cbcruk/vision-ocr
 
-CLI tool for image OCR using the macOS Vision Framework.
+CLI and Node.js library for image OCR using the macOS Vision Framework.
 
 Uses **node-swift** to call Swift code directly from Node.js.
 
@@ -19,18 +19,23 @@ Uses **node-swift** to call Swift code directly from Node.js.
 
 ## Installation
 
-```bash
-npm install
-npm run build:ts
-```
-
-Global install:
+### As a library
 
 ```bash
-npm link
+npm install @cbcruk/vision-ocr
 ```
 
-## Usage
+### As a CLI
+
+```bash
+# Global install
+npm install -g @cbcruk/vision-ocr
+
+# Or use without installing
+npx @cbcruk/vision-ocr
+```
+
+## CLI Usage
 
 ```bash
 # Extract text from clipboard image (also copies result to clipboard)
@@ -46,32 +51,25 @@ vision-ocr --no-copy
 vision-ocr screenshot.png --no-copy > output.txt
 ```
 
-## Project Structure
-
-```
-vision-ocr/
-├── src/
-│   ├── cli.ts              # CLI entry point
-│   └── vision-ocr.ts       # Swift module wrapper
-├── swift/
-│   ├── Package.swift        # SwiftPM package
-│   └── Sources/VisionOCR/
-│       └── VisionOCR.swift  # Vision Framework OCR
-└── package.json
-```
-
-## API
-
-Can also be used programmatically:
+## API Usage
 
 ```typescript
 import {
   recognizeText,
   recognizeTextFromFile,
   recognizeTextFromClipboard,
-} from 'vision-ocr'
+} from '@cbcruk/vision-ocr'
 
+// From raw image buffer
 const text = recognizeText(imageBuffer)
+
+// From file path
 const text = recognizeTextFromFile('/path/to/image.png')
+
+// From clipboard
 const text = recognizeTextFromClipboard()
 ```
+
+## License
+
+MIT

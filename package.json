@@ -1,9 +1,27 @@
 {
-  "name": "vision-ocr",
-  "version": "1.0.0",
+  "name": "@cbcruk/vision-ocr",
+  "version": "1.0.3",
   "description": "Extract text from images using macOS Vision Framework OCR",
   "author": "eunsoo",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/cbcruk/node-vision-ocr"
+  },
+  "keywords": [
+    "ocr",
+    "vision",
+    "macos",
+    "swift",
+    "text-recognition"
+  ],
+  "files": [
+    "dist",
+    "swift/Package.swift",
+    "swift/Package.resolved",
+    "swift/Sources",
+    "README.md"
+  ],
   "bin": {
     "vision-ocr": "dist/cli.js"
   },
