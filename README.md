@@ -99,6 +99,22 @@ The Swift layer (`swift/Sources/VisionOCR`) wraps Apple's `VNRecognizeTextReques
 
 The TypeScript layer (`src/`) loads the compiled native module (`.build/VisionOCR.node`) and exposes the CLI (`src/cli.ts`) and the library API (`src/vision-ocr.ts`).
 
+### About the Vision text recognizer
+
+The OCR itself is done entirely by Apple's Vision framework via `VNRecognizeTextRequest`. Apple's guide [Recognizing Text in Images](https://developer.apple.com/documentation/vision/recognizing-text-in-images) documents how the request works and how its options trade off speed against accuracy. The relevant points for this module:
+
+- **Two recognition levels.** `.fast` uses character-detection and is quicker but less accurate; `.accurate` uses a neural network for higher quality on complex or dense text. This module chooses **`.accurate`**.
+- **Language correction.** `usesLanguageCorrection` runs the recognized text through a language model to fix likely mistakes. It improves natural-language accuracy but can hurt on non-dictionary strings (serial numbers, codes). This module enables it (`usesLanguageCorrection = true`).
+- **Recognition languages.** `recognitionLanguages` is a priority-ordered list of BCP-47 codes; the recognizer uses it both to pick models and to inform language correction. This module sets `["ko-KR", "en-US"]`. You can query what a given OS supports with `VNRecognizeTextRequest.supportedRecognitionLanguages(for:revision:)`.
+- **Results are observations with normalized coordinates.** Each `VNRecognizedTextObservation` exposes ranked candidates via `topCandidates(_:)` (this module reads the top one, `.string`) and a `boundingBox` in normalized coordinates with a **bottom-left origin**. That is why the Swift code computes `1 - boundingBox.midY` — to flip Vision's bottom-left Y into a top-down reading order before sorting and merging lines.
+
+Vision exposes further knobs this module does not currently use, which you can add in `swift/Sources/VisionOCR/VisionOCR.swift` and rebuild if you need them:
+
+- `minimumTextHeight` — ignore text below a fraction of the image height (raise it to skip tiny text and speed things up).
+- `customWords` — supplement the vocabulary with domain terms for language correction.
+- `automaticallyDetectsLanguage` — let Vision infer the language instead of pinning `recognitionLanguages`.
+- `revision` — pin a specific recognizer revision for reproducible results across OS versions.
+
 ## Building from source
 
 ```bash
